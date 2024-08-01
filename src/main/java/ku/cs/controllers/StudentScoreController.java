@@ -1,5 +1,6 @@
 package ku.cs.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -24,19 +25,26 @@ public class StudentScoreController {
     private Student student;
 
     @FXML private void initialize() {
-        datasource = new StudentListFileDatasource("data", "student-list.csv");
-        studentList = datasource.readData();
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                datasource = new StudentListFileDatasource("data", "student-list.csv");
+                studentList = datasource.readData();
 
-        String studentId = (String) FXRouter.getData();
-        student = studentList.findStudentById(studentId);
-        if (student == null) {
-            try {
-                FXRouter.goTo("students-table");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                String studentId = (String) FXRouter.getData();
+                student = studentList.findStudentById(studentId);
+                // required Platform.runLater()
+                if (student == null) {
+                    try {
+                        FXRouter.goTo("students-table");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    showStudent(student);
+                }
             }
-        }
-        showStudent(student);
+        });
     }
 
     private void showStudent(Student student) {

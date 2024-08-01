@@ -69,4 +69,13 @@ public class StudentsTableController {
             studentsTableView.getItems().add(student);
         }
     }
+
+    @FXML
+    public void handleBackButton() {
+        try {
+            FXRouter.goTo("student-list");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
