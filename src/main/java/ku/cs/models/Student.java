@@ -36,7 +36,21 @@ public class Student {
     // TODO: design grading system for Student
     public String grade()
     {
-        return "F";
+        if (score >= 80) {
+            return "A";
+        } else if (score >= 70) {
+            return "B";
+        } else if (score >= 60) {
+            return "C";
+        } else if (score >= 45) {
+            return "D";
+        } else  {
+            return "F";
+        }
+    }
+
+    public String getGrade() {
+        return grade();
     }
 
     public boolean isId(String id) {
